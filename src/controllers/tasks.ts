@@ -29,11 +29,28 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getTask = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const task = await Task.findByPk(req.params.id);
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener tarea" });
+  }
+};
+
 const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const task = await Task.update(req.body, {
+    const { error } = TaskSchema.validate(req.body);
+    if (error) {
+      res
+        .status(400)
+        .json({ message: "Validation error", error: error.details });
+      return;
+    }
+    await Task.update(req.body, {
       where: { id: req.params.id },
     });
+    const task = await Task.findByPk(req.params.id);
     res.status(200).json(task);
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar tarea" });
