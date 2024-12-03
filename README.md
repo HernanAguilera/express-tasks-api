@@ -36,7 +36,7 @@ DB_PORT=5432
 
 Replace the values with your own.
 
-4. Create a `.env` file in the root directory and add the following content:
+4. Set the JWT_SECRET variable in the `.env` file
 
 ```bash
 JWT_SECRET=secret
