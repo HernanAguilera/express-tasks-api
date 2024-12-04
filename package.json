@@ -7,7 +7,7 @@
     "dev": "nodemon -r dotenv/config --exec ts-node src/index.ts",
     "build": "npm run clean && esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js",
     "clean": "rm -rf dist",
-    "init:db": "ts-node db/initialize.ts",
+    "init:db": "ts-node ./src/db/initialize.ts",
     "test": "jest --verbose --forceExit --detectOpenHandles --coverage --runInBand"
   },
   "keywords": [],
