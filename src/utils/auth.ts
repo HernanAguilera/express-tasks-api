@@ -1,7 +1,12 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 type TokenPayload = {
   userId: number;
+};
+
+export const hashPassword = (password: string) => {
+  return bcrypt.hashSync(password, 10);
 };
 
 export class AuthJWT {

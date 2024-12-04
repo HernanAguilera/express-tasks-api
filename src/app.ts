@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { config } from "dotenv";
 import apiTasks from "./routes/tasks";
+import apiUsers from "./routes/user";
 
 config();
 
@@ -20,6 +21,11 @@ app.use(function (req: Request, res: Response, next: Function) {
 // app.use(logger("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use("/api/tasks", apiTasks);
+app.use("/tasks", apiTasks);
+app.use("/", apiUsers);
+
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ message: "Route not found" });
+});
 
 module.exports = app;

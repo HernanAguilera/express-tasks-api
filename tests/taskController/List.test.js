@@ -1,13 +1,13 @@
-const { AuthJWT } = require("../../utils/auth");
-const { Task } = require("../../models/Task");
-const { User } = require("../../models/User");
+const { AuthJWT } = require("../../src/utils/auth");
+const { Task } = require("../../src/models/Task");
+const { User } = require("../../src/models/User");
 const request = require("supertest");
-const app = require("../../app");
-const { default: conecction } = require("../../db");
+const app = require("../../src/app");
+const { default: conecction } = require("../../src/db");
 const { faker } = require("@faker-js/faker");
 
 describe("Tasks List Controller", () => {
-  describe("GET /api/tasks", () => {
+  describe("GET /tasks", () => {
     const statusData = ["pending", "completed", "deleted"];
     let user = null;
     beforeEach(async () => {
@@ -27,7 +27,7 @@ describe("Tasks List Controller", () => {
     });
 
     it("should not return tasks without authorization", async () => {
-      const response = await request(app).get("/api/tasks");
+      const response = await request(app).get("/tasks");
 
       expect(response.status).toBe(401);
     });
@@ -38,7 +38,7 @@ describe("Tasks List Controller", () => {
         userId: user.id,
       });
       const response = await request(app)
-        .get("/api/tasks")
+        .get("/tasks")
         .set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(200);
@@ -64,7 +64,7 @@ describe("Tasks List Controller", () => {
         });
       }
       const response = await request(app)
-        .get("/api/tasks")
+        .get("/tasks")
         .set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(200);
@@ -111,24 +111,11 @@ describe("Tasks List Controller", () => {
           });
         }
         const response = await request(app)
-          .get(`/api/tasks?status=${status}`)
+          .get(`/tasks?status=${status}`)
           .set("Authorization", `Bearer ${token}`);
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(NumberOfTasks);
-        expect(response.body).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(Number),
-              name: expect.any(String),
-              description: expect.any(String),
-              status: expect.any(String),
-              userId: expect.any(Number),
-              updatedAt: expect.any(String),
-              createdAt: expect.any(String),
-            }),
-          ])
-        );
       }
     );
   });

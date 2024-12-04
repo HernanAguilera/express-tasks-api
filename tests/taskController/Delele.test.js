@@ -1,13 +1,13 @@
-const { AuthJWT } = require("../../utils/auth");
-const { Task } = require("../../models/Task");
-const { User } = require("../../models/User");
+const { AuthJWT } = require("../../src/utils/auth");
+const { Task } = require("../../src/models/Task");
+const { User } = require("../../src/models/User");
 const request = require("supertest");
-const app = require("../../app");
-const { default: conecction } = require("../../db");
-const { faker, fa } = require("@faker-js/faker");
+const app = require("../../src/app");
+const { default: conecction } = require("../../src/db");
+const { faker } = require("@faker-js/faker");
 
 describe("Tasks Delete Controller", () => {
-  describe("DELETE /api/tasks", () => {
+  describe("DELETE /tasks", () => {
     let user = null;
     let task = null;
 
@@ -34,7 +34,7 @@ describe("Tasks Delete Controller", () => {
     });
 
     it("should not return tasks without authorization", async () => {
-      const response = await request(app).delete(`/api/tasks/${task.id}`);
+      const response = await request(app).delete(`/tasks/${task.id}`);
 
       expect(response.status).toBe(401);
     });
@@ -53,7 +53,7 @@ describe("Tasks Delete Controller", () => {
         } while (taskExist);
 
         const response = await request(app)
-          .delete(`/api/tasks/${fakeId}`)
+          .delete(`/tasks/${fakeId}`)
           .set("Authorization", `Bearer ${token}`);
 
         expect(response.status).toBe(404);
@@ -70,8 +70,10 @@ describe("Tasks Delete Controller", () => {
           userId: user.id,
         });
         const response = await request(app)
-          .delete(`/api/tasks/${task.id}`)
+          .delete(`/tasks/${task.id}`)
           .set("Authorization", `Bearer ${token}`);
+
+        console.log({ response: response.body });
 
         expect(response.status).toBe(200);
       } catch (error) {
@@ -95,7 +97,7 @@ describe("Tasks Delete Controller", () => {
           }
         );
         const response = await request(app)
-          .delete(`/api/tasks/${task.id}`)
+          .delete(`/tasks/${task.id}`)
           .set("Authorization", `Bearer ${token}`);
 
         expect(response.status).toBe(400);
@@ -125,7 +127,7 @@ describe("Tasks Delete Controller", () => {
           }
         );
         const response = await request(app)
-          .delete(`/api/tasks/${task.id}`)
+          .delete(`/tasks/${task.id}`)
           .set("Authorization", `Bearer ${token}`);
 
         expect(response.status).toBe(400);

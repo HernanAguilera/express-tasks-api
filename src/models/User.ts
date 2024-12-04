@@ -27,4 +27,14 @@ const User = conecction.define("user", {
   },
 });
 
-export { User };
+const safeDataValues = function (user: any) {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    updatedAt: user.updatedAt,
+    createdAt: user.createdAt,
+  };
+};
+
+export { User, safeDataValues };

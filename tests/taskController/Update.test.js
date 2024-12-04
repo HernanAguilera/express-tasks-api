@@ -1,13 +1,13 @@
-const { AuthJWT } = require("../../utils/auth");
-const { Task } = require("../../models/Task");
-const { User } = require("../../models/User");
+const { AuthJWT } = require("../../src/utils/auth");
+const { Task } = require("../../src/models/Task");
+const { User } = require("../../src/models/User");
 const request = require("supertest");
-const app = require("../../app");
-const { default: conecction } = require("../../db");
-const { faker, th } = require("@faker-js/faker");
+const app = require("../../src/app");
+const { default: conecction } = require("../../src/db");
+const { faker } = require("@faker-js/faker");
 
 describe("Tasks Update Controller", () => {
-  describe("PUT /api/tasks", () => {
+  describe("PUT /tasks", () => {
     const tasksData = [
       {
         name: faker.lorem.sentence(3),
@@ -54,7 +54,7 @@ describe("Tasks Update Controller", () => {
     });
 
     it("should not return tasks without authorization", async () => {
-      const response = await request(app).put(`/api/tasks/${task.id}`);
+      const response = await request(app).put(`/tasks/${task.id}`);
 
       expect(response.status).toBe(401);
     });
@@ -68,7 +68,7 @@ describe("Tasks Update Controller", () => {
             userId: user.id,
           });
           const response = await request(app)
-            .put(`/api/tasks/${task.id}`)
+            .put(`/tasks/${task.id}`)
             .set("Authorization", `Bearer ${token}`)
             .send({
               name,
@@ -99,7 +99,7 @@ describe("Tasks Update Controller", () => {
           userId: user.id,
         });
         const response = await request(app)
-          .put(`/api/tasks/${task.id}`)
+          .put(`/tasks/${task.id}`)
           .set("Authorization", `Bearer ${token}`)
           .send({
             name: faker.lorem.sentence(3),
@@ -138,7 +138,7 @@ describe("Tasks Update Controller", () => {
           ]),
         };
         const response = await request(app)
-          .put(`/api/tasks/${task.id}`)
+          .put(`/tasks/${task.id}`)
           .set("Authorization", `Bearer ${token}`)
           .send(taskData);
 

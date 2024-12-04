@@ -1,13 +1,13 @@
-const { AuthJWT } = require("../../utils/auth");
-const { Task } = require("../../models/Task");
-const { User } = require("../../models/User");
+const { AuthJWT } = require("../../src/utils/auth");
+const { Task } = require("../../src/models/Task");
+const { User } = require("../../src/models/User");
 const request = require("supertest");
-const app = require("../../app");
-const { default: conecction } = require("../../db");
+const app = require("../../src/app");
+const { default: conecction } = require("../../src/db");
 const { faker } = require("@faker-js/faker");
 
 describe("Tasks Create Controller", () => {
-  describe("POST /api/tasks", () => {
+  describe("POST /tasks", () => {
     let user = null;
     const tasksData = [
       {
@@ -47,7 +47,7 @@ describe("Tasks Create Controller", () => {
     });
 
     it("should not return tasks without authorization", async () => {
-      const response = await request(app).post("/api/tasks");
+      const response = await request(app).post("/tasks");
 
       expect(response.status).toBe(401);
     });
@@ -61,7 +61,7 @@ describe("Tasks Create Controller", () => {
             userId: user.id,
           });
           const response = await request(app)
-            .post("/api/tasks")
+            .post("/tasks")
             .set("Authorization", `Bearer ${token}`)
             .send({
               name,
@@ -91,7 +91,7 @@ describe("Tasks Create Controller", () => {
           userId: user.id,
         });
         const response = await request(app)
-          .post("/api/tasks")
+          .post("/tasks")
           .set("Authorization", `Bearer ${token}`)
           .send({
             name: faker.lorem.sentence(3),
@@ -130,7 +130,7 @@ describe("Tasks Create Controller", () => {
           ]),
         };
         const response = await request(app)
-          .post("/api/tasks")
+          .post("/tasks")
           .set("Authorization", `Bearer ${token}`)
           .send(taskData);
 
