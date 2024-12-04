@@ -76,7 +76,7 @@ npm run dev
 
 To register a new user, send a POST request to the `/users` endpoint with the following body:
 
-```json
+```bash
 curl -X POST \
   http://localhost:3000/api/users \
   -H 'Content-Type: application/json' \
@@ -104,7 +104,7 @@ The response will be a JSON object with the following structure:
 
 To login a user, send a POST request to the `/login` endpoint with the following body:
 
-```json
+```bash
 curl -X POST \
   http://localhost:3000/api/login \
   -H 'Content-Type: application/json' \
@@ -126,7 +126,7 @@ The response will be a token:
 
 To create a new task, send a POST request to the `/tasks` endpoint with the following body:
 
-```json
+```bash
 curl -X POST \
   http://localhost:3000/api/tasks \
   -H 'Content-Type: application/json' \
@@ -153,14 +153,14 @@ To get all tasks, send a GET request to the `/tasks` endpoint.
 
 The response will be a JSON array with the following structure:
 
-```json
+```bash
 curl -X GET \
   http://localhost:3000/api/tasks
 ```
 
 Response:
 
-```json
+```bash
 [
   {
     "id": 1,
