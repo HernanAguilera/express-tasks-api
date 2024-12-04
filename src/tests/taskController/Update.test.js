@@ -47,7 +47,7 @@ describe("Tasks Update Controller", () => {
 
     afterEach(async () => {
       try {
-        conecction.truncate({ cascade: true });
+        await conecction.truncate({ cascade: true });
       } catch (error) {
         console.log({ error });
       }

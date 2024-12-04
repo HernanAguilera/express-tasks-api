@@ -8,6 +8,7 @@ const { faker } = require("@faker-js/faker");
 
 describe("Tasks Create Controller", () => {
   describe("POST /api/tasks", () => {
+    let user = null;
     const tasksData = [
       {
         name: faker.lorem.sentence(3),
@@ -29,11 +30,17 @@ describe("Tasks Create Controller", () => {
       },
     ];
 
-    beforeEach(async () => {});
+    beforeEach(async () => {
+      user = await User.create({
+        name: faker.person.firstName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+      });
+    });
 
     afterEach(async () => {
       try {
-        conecction.truncate({ cascade: true });
+        await conecction.truncate({ cascade: true });
       } catch (error) {
         console.log({ error });
       }
@@ -50,11 +57,6 @@ describe("Tasks Create Controller", () => {
       async ({ name, description, status, message }) => {
         try {
           const authJWT = new AuthJWT();
-          const user = await User.create({
-            name: faker.person.firstName(),
-            email: faker.internet.email(),
-            password: faker.internet.password(),
-          });
           const token = authJWT.generateToken({
             userId: user.id,
           });
@@ -85,11 +87,6 @@ describe("Tasks Create Controller", () => {
     it("should return error when has invalid status", async () => {
       try {
         const authJWT = new AuthJWT();
-        const user = await User.create({
-          name: faker.person.firstName(),
-          email: faker.internet.email(),
-          password: faker.internet.password(),
-        });
         const token = authJWT.generateToken({
           userId: user.id,
         });
@@ -120,11 +117,6 @@ describe("Tasks Create Controller", () => {
     it("should return tasks when has valid data", async () => {
       try {
         const authJWT = new AuthJWT();
-        const user = await User.create({
-          name: faker.person.firstName(),
-          email: faker.internet.email(),
-          password: faker.internet.password(),
-        });
         const token = authJWT.generateToken({
           userId: user.id,
         });

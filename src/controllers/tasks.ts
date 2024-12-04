@@ -4,7 +4,13 @@ import TaskSchema from "./Task.schema";
 
 const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tasks = await Task.findAll();
+    let filters: any = {};
+    if (req.query.status) {
+      filters.status = req.query.status;
+    }
+    const tasks = await Task.findAll({
+      where: filters,
+    });
     res.status(200).json(tasks);
   } catch (error) {
     console.log({ error });
@@ -59,10 +65,37 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 
 const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const task = await Task.destroy({
-      where: { id: req.params.id },
-    });
-    res.status(200).json(task);
+    const task = await Task.findByPk(req.params.id);
+    const hard = !!req.query.hard;
+    if (!task) {
+      res.status(404).json({ message: "Tarea no encontrada" });
+      return;
+    }
+    if (task.userId !== req.body.userId) {
+      res
+        .status(400)
+        .json({ message: "No tienes permisos para eliminar esta tarea" });
+      return;
+    }
+    if (task.status === "deleted" && !hard) {
+      res.status(400).json({ message: "Esta tarea ha sido eliminada" });
+      return;
+    }
+    if (hard) {
+      await Task.destroy({
+        where: { id: req.params.id },
+      });
+    } else {
+      await Task.update(
+        {
+          status: "deleted",
+        },
+        {
+          where: { id: req.params.id },
+        }
+      );
+    }
+    res.status(200).json({ message: "Tarea eliminada correctamente" });
   } catch (error) {
     res.status(500).json({ error: "Error al eliminar tarea" });
   }
