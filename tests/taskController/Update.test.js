@@ -11,20 +11,14 @@ describe("Tasks Update Controller", () => {
     const tasksData = [
       {
         name: faker.lorem.sentence(3),
-        description: faker.lorem.sentence(),
-        status: undefined,
-        message: '"status" is required',
-      },
-      {
-        name: faker.lorem.sentence(3),
         description: undefined,
-        status: faker.helpers.arrayElement(["pending", "completed", "deleted"]),
+        status: faker.helpers.arrayElement(["pending", "in progress", "completed"]),
         message: '"description" is required',
       },
       {
         name: undefined,
         description: faker.lorem.sentence(),
-        status: faker.helpers.arrayElement(["pending", "completed", "deleted"]),
+        status: faker.helpers.arrayElement(["pending", "in progress", "completed"]),
         message: '"name" is required',
       },
     ];
@@ -112,7 +106,7 @@ describe("Tasks Update Controller", () => {
           message: "Validation error",
           error: expect.arrayContaining([
             expect.objectContaining({
-              message: '"status" must be one of [pending, completed, deleted]',
+              message: '"status" must be one of [pending, in progress, completed]',
             }),
           ]),
         });
@@ -133,8 +127,8 @@ describe("Tasks Update Controller", () => {
           description: faker.lorem.sentence(),
           status: faker.helpers.arrayElement([
             "pending",
-            "completed",
-            "deleted",
+            "in progress",
+            "completed"
           ]),
         };
         const response = await request(app)

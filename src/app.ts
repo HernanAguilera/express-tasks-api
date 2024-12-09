@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { config } from "dotenv";
 import apiTasks from "./routes/tasks";
 import apiUsers from "./routes/user";
+import cors from "cors";
 
 config();
 
@@ -19,6 +20,7 @@ app.use(function (req: Request, res: Response, next: Function) {
   next();
 });
 // app.use(logger("dev"));
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/tasks", apiTasks);
@@ -29,3 +31,4 @@ app.use((req: Request, res: Response) => {
 });
 
 module.exports = app;
+export default app;

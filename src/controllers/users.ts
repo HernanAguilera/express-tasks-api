@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { User, safeDataValues } from "../models/User";
 import { UserSchema, UserLoginSchema, UserRegisterSchema } from "./User.schema";
-import { hashPassword, AuthJWT } from "../utils/auth";
+import { hashPassword, comparePassword, AuthJWT } from "../utils/auth";
 
 const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -89,13 +89,13 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       res.status(401).json({ message: "Usuario no encontrado" });
       return;
     }
-    if (user.password !== hashPassword(req.body.password)) {
+    if (!comparePassword(req.body.password, (user as any).password)) {
       res.status(401).json({ message: "Contraseña incorrecta" });
       return;
     }
     const authJWT = new AuthJWT();
     const token = authJWT.generateToken({
-      userId: user.id,
+      userId: (user as any).id,
     });
     res.status(200).json({ token });
   } catch (error) {

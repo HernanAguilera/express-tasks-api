@@ -10,7 +10,8 @@ const conecction = new Sequelize({
   username: process.env.DB_USER as string,
   password: process.env.DB_PASSWORD as string,
   database: process.env.DB_NAME as string,
-  logging: process.env.APP_ENV === "development",
+  // logging: process.env.APP_ENV === "development",
+  logging: false,
 });
 
 conecction

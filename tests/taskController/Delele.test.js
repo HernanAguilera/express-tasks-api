@@ -20,7 +20,7 @@ describe("Tasks Delete Controller", () => {
       task = await Task.create({
         name: faker.lorem.sentence(3),
         description: faker.lorem.sentence(),
-        status: faker.helpers.arrayElement(["pending", "completed", "deleted"]),
+        status: faker.helpers.arrayElement(["pending", "completed", "in progress"]),
         userId: user.id,
       });
     });
@@ -76,31 +76,6 @@ describe("Tasks Delete Controller", () => {
         console.log({ response: response.body });
 
         expect(response.status).toBe(200);
-      } catch (error) {
-        console.log({ error });
-        throw error;
-      }
-    });
-
-    it("should return error when try to delete a task that has been deleted", async () => {
-      try {
-        const authJWT = new AuthJWT();
-        const token = authJWT.generateToken({
-          userId: user.id,
-        });
-        await Task.update(
-          {
-            status: "deleted",
-          },
-          {
-            where: { id: task.id },
-          }
-        );
-        const response = await request(app)
-          .delete(`/tasks/${task.id}`)
-          .set("Authorization", `Bearer ${token}`);
-
-        expect(response.status).toBe(400);
       } catch (error) {
         console.log({ error });
         throw error;
