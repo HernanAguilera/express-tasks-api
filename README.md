@@ -24,7 +24,7 @@ npm install
 3. Create a `.env` file in the root directory and add the following content:
 
 ```bash
-PORT=3000
+PORT=4000
 DB_ENVIRONMENT=development
 DB_DIALECT=postgres
 DB_USER=postgres
@@ -68,7 +68,7 @@ npm run db:init
 npm run dev
 ```
 
-7. Open your browser and navigate to `http://localhost:3000/api`
+7. Open your browser and navigate to `http://localhost:4000/api`
 
 ## Usage
 
@@ -78,7 +78,7 @@ To register a new user, send a POST request to the `/users` endpoint with the fo
 
 ```bash
 curl -X POST \
-  http://localhost:3000/api/users \
+  http://localhost:4000/api/users \
   -H 'Content-Type: application/json' \
   -d '{
     "name": "John Doe",
@@ -106,7 +106,7 @@ To login a user, send a POST request to the `/login` endpoint with the following
 
 ```bash
 curl -X POST \
-  http://localhost:3000/api/login \
+  http://localhost:4000/api/login \
   -H 'Content-Type: application/json' \
   -d '{
     "email": "john.doe@example.com",
@@ -128,7 +128,7 @@ To create a new task, send a POST request to the `/tasks` endpoint with the foll
 
 ```bash
 curl -X POST \
-  http://localhost:3000/api/tasks \
+  http://localhost:4000/api/tasks \
   -H 'Content-Type: application/json' \
   -d '{
     "title": "Buy groceries",
@@ -155,7 +155,7 @@ The response will be a JSON array with the following structure:
 
 ```bash
 curl -X GET \
-  http://localhost:3000/api/tasks
+  http://localhost:4000/api/tasks
 ```
 
 Response:
@@ -186,7 +186,7 @@ The request body should be a JSON object with the following structure:
 
 ````bash
 curl -X PUT \
-  http://localhost:3000/api/tasks/1 \
+  http://localhost:4000/api/tasks/1 \
   -H 'Content-Type: application/json' \
   -d '{
     "status": "completed"
